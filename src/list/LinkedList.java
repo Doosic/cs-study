@@ -15,6 +15,16 @@ public class LinkedList<T> implements List<T> {
   }
 
   @Override
+  public void printAll() {
+    Node currentNode = this.head;
+
+    while (currentNode != null){
+      System.out.println(currentNode.getData());
+      currentNode = currentNode.getNext();
+    }
+  }
+
+  @Override
   public void insertAt(int index, T data) {
     if(index > this.count || index < 0){
         throw new Error("범위를 넘어갔습니다.");
