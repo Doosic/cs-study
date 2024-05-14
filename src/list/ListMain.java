@@ -22,8 +22,29 @@ public class ListMain {
     list.insertAt(4, 4);
     list.printAll();
 
-    System.out.println("===== crear() 호출 =====");
+    System.out.println("===== clear() 호출 =====");
     list.clear();
     list.printAll();
+
+    System.out.println("===== insertLast() 세 번 호출 =====");
+    list.insertLast(0);
+    list.insertLast(1);
+    list.insertLast(2);
+    list.printAll();
+
+    System.out.println("===== deleteAt() 세 번 호출 =====");
+    list.printAll();
+    list.deleteAt(0);
+    list.printAll();
+    list.deleteAt(1);
+    list.printAll();
+
+    System.out.println("===== deleteLast() 호출 ===== ");
+    list.deleteLast();
+    list.printAll();
+
+    System.out.println("===== getNodeAt() 호출 ===== ");
+    list.insertLast(7);
+    System.out.println(list.getNodeAt(0).getData());
   }
 }

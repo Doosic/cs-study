@@ -66,4 +66,53 @@ public class LinkedList<T> implements List<T> {
     this.count++;
   }
 
+  @Override
+  public void insertLast(T data) {
+    this.insertAt(this.count, data);
+  }
+
+  @Override
+  public void deleteAt(int index) {
+
+    // 1. index >= this.count를 사용하는 이유는 count의 index가 실제 순서 index에 비해 값이 1크기 때문이다.
+    if(index >= this.count || index < 0){
+      throw new Error("제거할 수 없습니다.");
+    }
+
+    // 1.첫 번째 노드를 제거한다.
+    // 2.첫 번째 노드를 제외한 나머지 노드를 제거한다.
+    Node currentNode = this.head;
+
+    if(index == 0){
+      Node deleteNode = this.head;
+      this.head = this.head.getNext();
+      this.count--;
+    } else {
+      for(int i = 0; i < index - 1; i++){
+        currentNode = currentNode.getNext();
+      }
+      Node deleteNode = currentNode.getNext();
+      currentNode.setNext(currentNode.getNext().getNext());
+      this.count--;
+    }
+  }
+
+  @Override
+  public void deleteLast() {
+    this.deleteAt(this.count - 1);
+  }
+
+  @Override
+  public Node getNodeAt(int index) {
+    if(index >= this.count || index < 0){
+      throw new Error("범위를 넘어갔습니다.");
+    }
+
+    Node currentNode = this.head;
+    for(int i = 0; i < index; i++){
+      currentNode = currentNode.getNext();
+    }
+    return currentNode;
+  }
+
 }
