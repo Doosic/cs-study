@@ -17,11 +17,24 @@ public class LinkedList<T> implements List<T> {
   @Override
   public void printAll() {
     Node currentNode = this.head;
+    String text = "[";
 
     while (currentNode != null){
-      System.out.println(currentNode.getData());
+      text += currentNode.getData();
       currentNode = currentNode.getNext();
+
+      if(currentNode != null){
+        text += ", ";
+      }
     }
+    text += "]";
+    System.out.println(text);
+  }
+
+  @Override
+  public void clear() {
+    this.head = null;
+    this.count = 0;
   }
 
   @Override
