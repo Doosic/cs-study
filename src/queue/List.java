@@ -1,6 +1,8 @@
-package list;
+package queue;
 
-public interface List <T> {
+import queue.Node;
+
+public interface List<T> {
 
   /**
    * - 연결리스트의 추상자료형
@@ -17,7 +19,7 @@ public interface List <T> {
   void clear();
   void insertAt(int index, T data);
   void insertLast(T data);
-  void deleteAt(int index);
-  void deleteLast();
+  Node deleteAt(int index);
+  Node deleteLast();
   Node getNodeAt(int index);
 }
