@@ -19,11 +19,11 @@ public class LinkedList<T> implements List<T> {
     Node currentNode = this.head;
     String text = "[";
 
-    while (currentNode != null){
+    while (currentNode != null) {
       text += currentNode.getData();
       currentNode = currentNode.getNext();
 
-      if(currentNode != null){
+      if (currentNode != null) {
         text += ", ";
       }
     }
@@ -37,24 +37,42 @@ public class LinkedList<T> implements List<T> {
     this.count = 0;
   }
 
+  // insertAt(index, data) - 인덱스 삽입
   @Override
   public void insertAt(int index, T data) {
-    if(index > this.count || index < 0){
-        throw new Error("범위를 넘어갔습니다.");
+    /*
+      - 0보다 작은 음수이거나, 현재 index보다 큰곳에 넣으려 할 경우
+      데이터가 1개 있는 경우 데이터는 0번 인덱스에 존재하고 count는 1이다.
+      이때 2번 이상의 인덱스에 삽입하게 된다면 1번 인덱스를 건너 뛰게 된다.
+      그러므로 index(2) > this.count(1) 라는 경우가 나오면 Error를 던져준다.
+    */
+    if (index > this.count || index < 0) {
+      throw new Error("범위를 넘어갔습니다.");
     }
 
-    // 1.list의 가장 앞부분에 삽입하는 경우. 새로 삽입하는 노드가 head가 되어야 한다.
-    // 2.가장 앞부분을 제외한 나머지 부분에 삽입하는 경우. head 노드에서 next로 목표 인덱스까지 이동.
+    // 데이터 값을 가진 Node를 생성자를 통해 생성한다.
     Node newNode = new Node(data);
 
-    if(index == 0){
+    // 0번 index에 데이터를 삽입 할 경우
+    if (index == 0) {
+      /*
+          1.새로 생성된 노드에 다음 노드를 현재 헤드에 저장된 노드로 지정한다.
+          2.새로 생성된 노드가 0번 인덱스에 위치함으로 헤드가 된다.
+       */
       newNode.setNext(this.head);
       this.head = newNode;
     } else {
+
+      /*
+          1.데이터를 삽입 할 노드의 위치까지 이동하기 위해 헤드노드를 변수에 담아준다.
+          2.반복문을 통해 데이터를 삽입 할 노드의 위치까지 이동한다.
+            index -1 까지 이동하는 이유는 index는 0번부터 시작하기 때문이다.
+          3.
+       */
       Node currentNode = this.head;
 
       // 삽입 할 위치의 전 노드까지 이동
-      for(int i = 0; i < index - 1; i++){
+      for (int i = 0; i < index - 1; i++) {
         currentNode = currentNode.getNext();
       }
 
@@ -75,7 +93,7 @@ public class LinkedList<T> implements List<T> {
   public void deleteAt(int index) {
 
     // 1. index >= this.count를 사용하는 이유는 count의 index가 실제 순서 index에 비해 값이 1크기 때문이다.
-    if(index >= this.count || index < 0){
+    if (index >= this.count || index < 0) {
       throw new Error("제거할 수 없습니다.");
     }
 
@@ -83,12 +101,12 @@ public class LinkedList<T> implements List<T> {
     // 2.첫 번째 노드를 제외한 나머지 노드를 제거한다.
     Node currentNode = this.head;
 
-    if(index == 0){
+    if (index == 0) {
       Node deleteNode = this.head;
       this.head = this.head.getNext();
       this.count--;
     } else {
-      for(int i = 0; i < index - 1; i++){
+      for (int i = 0; i < index - 1; i++) {
         currentNode = currentNode.getNext();
       }
       Node deleteNode = currentNode.getNext();
@@ -104,12 +122,12 @@ public class LinkedList<T> implements List<T> {
 
   @Override
   public Node getNodeAt(int index) {
-    if(index >= this.count || index < 0){
+    if (index >= this.count || index < 0) {
       throw new Error("범위를 넘어갔습니다.");
     }
 
     Node currentNode = this.head;
-    for(int i = 0; i < index; i++){
+    for (int i = 0; i < index; i++) {
       currentNode = currentNode.getNext();
     }
     return currentNode;
