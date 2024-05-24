@@ -1,7 +1,4 @@
-package hashTable;
-
-import hashTable.DoublyLinkedList;
-import hashTable.Node;
+package hashSet;
 
 public class HashTable<T> {
 
