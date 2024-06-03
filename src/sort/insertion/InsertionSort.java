@@ -42,6 +42,7 @@ public class InsertionSort {
           break;
         }
       }
+
       // 데이터값이 더 작다면 insertionData 등록
       // 반복문을 나온 후 j + 1 임을 기억할 것
       arr[j + 1] = insertionData;
