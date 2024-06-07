@@ -1,6 +1,6 @@
 package tree;
 
-public class BinaryTree<T> implements Tree{
+public class BinaryTree<T> implements Tree<T>{
 
   private T data;
   private BinaryTree leftSubTree;
@@ -42,11 +42,11 @@ public class BinaryTree<T> implements Tree{
     this.rightSubTree = binaryTree;
   }
 
-  public void preOrderTrabersal(BinaryTree tree){
+  public void preOrderTraversal(BinaryTree tree){
     if(tree == null) return;
     System.out.println(tree.getData());
-    this.preOrderTrabersal(tree.getLeftSubTree());
-    this.preOrderTrabersal(tree.getRightSubTree());
+    this.preOrderTraversal(tree.getLeftSubTree());
+    this.preOrderTraversal(tree.getRightSubTree());
   }
 
   public void inOrderTraversal(BinaryTree tree){

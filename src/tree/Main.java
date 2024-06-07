@@ -22,7 +22,7 @@ public class Main {
     System.out.println("루트의 오른쪽 자식 노드의 왼쪽 자식노드: " + tree1.getRightSubTree().getLeftSubTree().getData());
 
     System.out.println("===== 전위순회 =====");
-    tree1.preOrderTrabersal(tree1);
+    tree1.preOrderTraversal(tree1);
 
     System.out.println("===== 중위순회 =====");
     tree1.inOrderTraversal(tree1);
