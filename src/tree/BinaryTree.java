@@ -65,4 +65,16 @@ public class BinaryTree<T> implements Tree<T>{
     System.out.println(tree.getData());
   }
 
+  public BinaryTree removeLeftSubTree() {
+    BinaryTree deletingNode = this.getLeftSubTree();
+    this.setLeftSubTree(null);
+    return deletingNode;
+  }
+
+  public BinaryTree remeveRightSubTree() {
+    BinaryTree deletingNode = this.getRightSubTree();
+    this.setRightSubTree(null);
+    return deletingNode;
+  }
+
 }

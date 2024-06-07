@@ -24,5 +24,8 @@ public interface Tree<T> {
   void inOrderTraversal(BinaryTree tree);
   void postOrderTraversal(BinaryTree tree);
 
+  BinaryTree removeLeftSubTree();
+  BinaryTree remeveRightSubTree();
+
 
 }
