@@ -26,5 +26,8 @@ public class Main {
 
     System.out.println("===== Search 1 =====");
     System.out.println(binarySearchTree.search(1).getData());
+
+    binarySearchTree.remove(10);
+    binarySearchTree.getRoot().inOrderTraversal(binarySearchTree.getRoot());
   }
 }

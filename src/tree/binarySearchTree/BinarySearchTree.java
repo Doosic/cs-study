@@ -4,6 +4,27 @@ import tree.BinaryTree;
 
 public class BinarySearchTree<T> {
 
+  /*
+  * - 이진 트리
+  * 이진트리는 컴파일러가 사용하는 구문 트리를 만들거나
+  * JPEG, MPEG 파일을 만드는 허프만 트리를 만들때 유용하게 쓰인다.
+  *
+  * - 이진 탐색 트리
+  *
+  * 이진 탐색 트리는 이진 트리에 규칙을 더 추가해서 만든 자료구조이며,
+  *
+  * 규칙1.중복된 노드가 없어야 한다.
+  * 규칙2.특정 노드의 왼쪽 자식노드는 해당 노드보다 작은 값으로만 이루어져야 한다.
+  * 규칙3.특정 노드의 오른쪽 자식노드는 해당 노드보다 큰 값으로만 이루어져야 한다.
+  * 규칙4.모든 자식 트리에도 위에 규칙이 적용되어야 한다.
+  *
+  * - 시간 복잡도
+  * 트리가 잘 만들어 지는것에 따라 이진 탐색 트리의 삽입, 제거, 검색의 성능은 O(n)이 될 수도, O(logN)이 될수도 있다.
+  * (잘못만들어지는 트리는 한방향으로만 데이터가 치우치는 경우를 말한다. 연결리스트와 다를바 없는 상황이다.)
+  *
+  *
+  * */
+
   private BinaryTree<Integer> root;
 
   public BinarySearchTree(){};
@@ -151,6 +172,43 @@ public class BinarySearchTree<T> {
       // 선택된 큰 값의 자식노드로 제거될 노드의 자식노드 연결, 부모노드 연결, 오른쪽 노드 연결을 해줘야 한다.
       // 그러나 구현의 편의성을 위해 제거할 노드에 값으로 변경될 노드의 값을 대입해준다. 그렇다면 제거하고 새롭게 연결할 필요가 없다.
 
+      // 대체할 노드의 왼쪽 자식노드와 부모노드를 변수에 저장해둔다.
+      BinaryTree<Integer> replacingNode = deletingNode.getLeftSubTree();
+      BinaryTree<Integer> replacingNodeParent = deletingNode;
+
+      // 대체할 노드는 삭제할 왼쪽 노드의 가장 큰 값을 택해야 함으로 오른쪽으로 이동하며 찾는다
+      while(replacingNode.getRightSubTree() != null){
+        replacingNodeParent = replacingNode;
+        replacingNode = replacingNode.getRightSubTree();
+      }
+
+      // 제거할 데이터를 return값으로 전해주기 위해 deletingNodeData에 담아준다.
+      int deletingNodeData = deletingNode.getData();
+      // 기존 제거할 Node의 데이터는 대체될 Node의 Data를 담아준다.
+      deletingNode.setData(replacingNode.getData());
+
+      /*
+        대체할 노드의 부모노드(replacingNodeParent)에 오른쪽 Node로 오른쪽 자식노드(replacingNode)의 왼쪽 노드를 담아준다.
+        오른쪽 자식 노드는 가장 큰값이라는 가정하에 deletingNode가 있던 자리로 이동했기 때문이다.
+
+        왼쪽 자식 노드는 있을수도 있고 없을수도 있다. 있다면
+       */
+      if(replacingNodeParent.getLeftSubTree() == replacingNode){
+        replacingNodeParent.setLeftSubTree(replacingNode.getLeftSubTree());
+      }else{
+        replacingNodeParent.setRightSubTree(replacingNode.getLeftSubTree());
+      }
+
+      deletingNode = replacingNode;
+      deletingNode.setData(deletingNodeData);
+    }
+
+    // root 노드가 변경된 경우라면 fakeParentRootNode에 오른쪽 자식 노드로 설정해준다.
+    // 0 -> 18 -> 15가 있을경우 15가 18의 자리를 대체했을때 15는 fakePrentRootNode의 rightSubTree에 담겨있다.
+    // 이때 root를 15로 변경해준다. fakeParentRootNode의 RightSubTree는 Root 노드이기 때문이다.
+    // 말로하기 작성하기 어려움... 직접 그려봐야 이해할 수 있다.
+    if(fakeParentRootNode.getRightSubTree() != this.root){
+      this.root = fakeParentRootNode.getRightSubTree();
     }
 
     return deletingNode;
