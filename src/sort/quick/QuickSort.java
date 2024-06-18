@@ -2,7 +2,7 @@ package sort.quick;
 
 public class QuickSort {
 
-  /**
+  /*
    * - 퀵 정렬
    * 퀵 정렬은 재귀를 사용하며 분할정복 알고리즘에 속한다.
    *

@@ -2,7 +2,7 @@ package sort.merge;
 
 public class MergeSort {
 
-  /**
+  /*
    * - 병합 정렬
    * 해결하기 어려운 문제를 해결하기 쉬울 정도로 문제를 쪼개서 해결한다(분할 정복)
    * 재귀로 해결할 수 있다.

@@ -2,7 +2,7 @@ package deque;
 
 public class Deque<T> {
 
-  /**
+  /*
    * 덱은 데이터의 삽입과 제거를 head와 tail에서 자유롭게 한다.
    *
    * printAll - 모든 데이터  출력

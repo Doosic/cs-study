@@ -2,7 +2,7 @@ package sort.insertion;
 
 public class InsertionSort {
 
-  /**
+  /*
    * - 삽입 정렬
    * 삽입정렬은 먼저 정렬된 영역과 정렬되지 않은 영억으로 구분한다.
    * 이후 정렬되지 않은 영역의 첫번째 데이터를 꺼내 정렬된 영역의 데이터와 하나씩 비교하며

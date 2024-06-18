@@ -2,7 +2,7 @@ package stack;
 
 public class Stack<T> {
 
-  /**
+  /*
    * push - 데이터 삽입
    * pop - 데이터 제거
    * peek - 데이터 참조

@@ -2,7 +2,7 @@ package sort.selection;
 
 public class SelectionSort {
 
-  /**
+  /*
    * - 선택 정렬
    * 배열의 "정렬되지 않은 영역"의 첫 번째 원소를 시작으로 마지막 원소까지
    * 비교 후 가장 작은 값을 첫 번째 원소로 가져온다.

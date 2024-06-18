@@ -2,7 +2,7 @@ package hashSet;
 
 public class HashTable<T> {
 
-  /**
+  /*
    * set - 데이터 삽입
    * get - 데이터 읽기
    * remove - 데이터 제거
