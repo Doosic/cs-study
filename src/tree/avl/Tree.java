@@ -26,7 +26,7 @@ public interface Tree<T> {
 
 
   BinaryTree removeLeftSubTree();
-  BinaryTree remeveRightSubTree();
+  BinaryTree removeRightSubTree();
 
 
 }
