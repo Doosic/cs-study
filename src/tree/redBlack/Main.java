@@ -10,6 +10,10 @@ public class Main {
     redBlackTree.insert(75);
     redBlackTree.insert(85);
 
+    redBlackTree.remove(19);
+    redBlackTree.remove(75);
+    redBlackTree.remove(85);
+
     System.out.println(redBlackTree.getRoot().getData());
 
     if(redBlackTree.getRoot() != null){

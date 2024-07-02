@@ -22,6 +22,10 @@ public class BinaryTree<T> implements Tree<T>{
     this.color = RED;
   }
 
+  public BinaryTree(){
+
+  }
+
 
   public T getData() {
     return this.data;

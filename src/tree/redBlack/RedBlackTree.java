@@ -238,8 +238,157 @@ public class RedBlackTree<T> implements RedBlack{
   }
 
 
-  public BinaryTree remove(int targetData){
-   return null;
+  public BinaryTree remove(int data){
+    BinaryTree<Integer> currentNode = this.root;
+
+    while(currentNode != null && currentNode.getData() != data){
+      if(data < currentNode.getData()){
+        currentNode = currentNode.getLeftSubTree();
+      }else if(data > currentNode.getData()){
+        currentNode = currentNode.getRightSubTree();
+      }
+    }
+
+    // 제거할 데이터를 찾지못했다면 함수 종료
+    if(currentNode == null){
+      return null;
+    }
+
+    // 삭제 후 대체할 노드를 담을 변수 선언
+    BinaryTree replaceNode = null;
+    boolean deletedNodeColor = new BinaryTree<>().isRED();
+    BinaryTree nodeColor = new BinaryTree<>();
+
+    // 자식 노드가 1개 이하 일때의 상황
+    if(currentNode.getLeftSubTree() == null || currentNode.getRightSubTree() == null){
+      replaceNode = this.removeWithZeroOneChild(currentNode);
+      deletedNodeColor = currentNode.isColor();
+    }else{
+      // 자식 노드가 2개인 경우
+      // 왼쪽 자식중 가장 큰 값을 가져와 대체한다.
+      BinaryTree<Integer> succesor = this.getBiggest(currentNode.getLeftSubTree());
+      currentNode.setData(succesor.getData());
+      replaceNode = this.removeWithZeroOneChild(succesor);
+      deletedNodeColor = currentNode.isColor();
+    }
+
+    if(deletedNodeColor == nodeColor.isBLACK()){
+      this.rebalanceAfterDeletion(replaceNode);
+
+      if(replaceNode instanceof NilNode){
+        this.replaceParentsChild(replaceNode.getParentTree(), replaceNode, null);
+      }
+    }
+
+   return replaceNode;
+  }
+
+  private void rebalanceAfterDeletion(BinaryTree node){
+    if(node == this.root){
+      node.setColor(node.isBLACK());
+      return;
+    }
+
+    BinaryTree sibling = this.getSibling(node);
+
+    if(sibling.isColor() == node.isRED()){
+      this.handleRedSibling(node, sibling);
+      sibling = this.getSibling(node);
+    }
+
+    if(this.isBlack(sibling)){
+      if(this.isBlack(sibling.getLeftSubTree()) && this.isBlack(sibling.getRightSubTree())){
+        if(node.getParentTree().isColor() == node.isRED()){
+          sibling.setColor(sibling.isRED());
+          node.getParentTree().setColor(node.getParentTree().isBLACK());
+        }else{
+          sibling.setColor(sibling.isRED());
+          this.rebalanceAfterDeletion(node.getParentTree());
+        }
+      }else{
+        this.handleBlackSiblingWithAtLeastOneRedChild(node, sibling);
+      }
+    }
+
+  }
+
+  private void handleBlackSiblingWithAtLeastOneRedChild(BinaryTree node, BinaryTree sibling){
+    boolean nodeIsLeftChild = (node.getParentTree().getLeftSubTree() == node);
+
+    if(nodeIsLeftChild == true && this.isBlack(sibling.getRightSubTree())){
+      sibling.getLeftSubTree().setColor(sibling.isBLACK());
+      sibling.setColor(sibling.isRED());
+      this.rotateRight(sibling);
+      sibling = node.getParentTree().getRightSubTree();
+    }else if(nodeIsLeftChild == false && this.isBlack(sibling.getLeftSubTree())){
+      sibling.getRightSubTree().setColor(sibling.isBLACK());
+      sibling.setColor(sibling.isBLACK());
+      this.rotateLeft(sibling);
+      sibling = node.getParentTree().getLeftSubTree();
+    }
+
+    sibling.setColor(node.getParentTree().isColor());
+    node.setColor(node.isBLACK());
+
+    if(nodeIsLeftChild){
+      sibling.getRightSubTree().setColor(sibling.isBLACK());
+      this.rotateLeft(node.getParentTree());
+    }else{
+      sibling.getLeftSubTree().setColor(sibling.isBLACK());
+      this.rotateRight(node.getParentTree());
+    }
+  }
+
+  private void handleRedSibling(BinaryTree node, BinaryTree sibling){
+    sibling.setColor(sibling.isRED());
+    node.getParentTree().setColor(node.isRED());
+
+    // 부모노드를 대체된 노드 방향으로 회전시킨다. 왼쪽 노드일 경우 왼쪽으로
+    if(node.getParentTree().getLeftSubTree() == node){
+      this.rotateLeft(node.getParentTree());
+    }else{
+      this.rotateRight(node.getParentTree());
+    }
+  }
+
+  // 형제 노드 구하기(getSibling)
+  private BinaryTree getSibling(BinaryTree node){
+    BinaryTree parent = node.getParentTree();
+
+    // 현재노드가 부모노드의 왼쪽 자식노드라면 형제는 반대인 오른쪽
+    if(node == parent.getLeftSubTree()){
+      return parent.getRightSubTree();
+    }else if(node == parent.getRightSubTree()){
+      return parent.getLeftSubTree();
+    }
+    return null;
+  }
+
+  private BinaryTree getBiggest(BinaryTree node) {
+    while(node.getRightSubTree() != null){
+      node = node.getRightSubTree();
+    }
+    return node;
+  }
+
+  private BinaryTree removeWithZeroOneChild(BinaryTree node) {
+    // 자식 노드가 왼쪽에 있다면 할아버지 노드와 왼쪽 자식 노드를 연결해준다.
+    if(node.getLeftSubTree() != null){
+      this.replaceParentsChild(node.getParentTree(), node, node.getLeftSubTree());
+      return node.getLeftSubTree();
+
+      // 자식 노드가 오른쪽에 있다면 할아버지 노드와 오른쪽 자식 노드를 연결해준다.
+    }else if(node.getRightSubTree() != null){
+      this.replaceParentsChild(node.getParentTree(), node, node.getRightSubTree());
+      return node.getRightSubTree();
+
+      // 자식노드가 모두 null인 경우 NILL 노드를 임시로 사용한다.
+    }else{
+      BinaryTree newChild = (node.isColor() == node.isBLACK()) ? new NilNode() : null;
+      this.replaceParentsChild(node.getParentTree(), node, newChild);
+      return newChild;
+    }
+
   }
 
 
