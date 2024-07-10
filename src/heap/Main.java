@@ -12,5 +12,8 @@ public class Main {
 
     heap.getRoot().inOrderTraversal(heap.getRoot());
     System.out.println(heap.getRoot().getData());
+
+    System.out.println("===== remove =====");
+    System.out.println(heap.remove().getData());
   }
 }

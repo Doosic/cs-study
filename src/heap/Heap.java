@@ -125,6 +125,106 @@ public class Heap {
     return null;
   }
 
+  // 우선순위가 가장 높은 것부터 제거된다.
+  public BinaryTree remove(){
+    BinaryTree deletedNode = null;
+
+    // 루트노드가 제거될때
+    if(this.lastInsertedNode == this.root){
+      deletedNode = this.root;
+      this.root = null;
+      this.lastInsertedNode = null;
+      return deletedNode;
+    }
+
+    // getNewLastInsertedNode 마지막에 삽입된 노드의 바로 이전 노드를 구한다.
+    BinaryTree prevLastInsertedNode = this.getNewLastInsertedNode();
+    // 마지막에 삽입된 노드의 값을 루트노드와 바꿔준다.
+    // tempData에 루트노드의 값을 담고, root에는 마지막 데이터의 값을 담아주고 last에는 루트의 값을 담아준다.
+    int tempData = (int) this.root.getData();
+    this.root.setData(this.lastInsertedNode.getData());
+    this.lastInsertedNode.setData(tempData);
+
+    // 마지막으로 삽입된 노드의 부모에게 연결되어있는 자식의 참조를 해제한다.
+    if(this.lastInsertedNode.getParentTree().getLeftSubTree() == this.lastInsertedNode){
+      this.lastInsertedNode.getParentTree().setLeftSubTree(null);
+    }else{
+      this.lastInsertedNode.getParentTree().setRightSubTree(null);
+    }
+    // 자식은 부모의 참조를 해제한다.
+    this.lastInsertedNode.setParentTree(null);
+    deletedNode = this.lastInsertedNode;
+    this.lastInsertedNode = prevLastInsertedNode;
+
+    BinaryTree current = this.root;
+    do{
+      // getHigherPriorityChild 두 노드를 비교하여 더 우선순위가 높은(값이작은)것을 반환해준다.(최소힙)
+      BinaryTree higherChild = this.getHigherPriorityChild(current.getLeftSubTree(), current.getRightSubTree());
+      if(higherChild == null){
+        break;
+      }else if(this.isBigPriority((Integer) current.getData(), (Integer) higherChild.getData()) == false){
+        // 우선순위가 더 높은 자식이 존재 할 경우 current 노드와 위치를 변경한다.
+        tempData = (int) current.getData();
+        current.setData(higherChild);
+        higherChild.setData(tempData);
+        current = higherChild;
+      }else{
+        break;
+      }
+    }while(current.getLeftSubTree() != null || current.getRightSubTree() != null);
+
+    return deletedNode;
+  }
+
+  private BinaryTree getHigherPriorityChild(BinaryTree left, BinaryTree right){
+    if(left == null){
+      return right;
+    }else if(right == null){
+      return left;
+    }else if(this.isBigPriority((Integer) left.getData(), (Integer) right.getData())){
+      return left;
+    }else{
+      return right;
+    }
+  }
+
+  private BinaryTree getNewLastInsertedNode(){
+    BinaryTree prevLastInsertedNode = null;
+
+    if(this.lastInsertedNode == this.lastInsertedNode.getParentTree().getLeftSubTree()){
+      BinaryTree current = this.lastInsertedNode;
+      BinaryTree firstLeftSibling = null;
+      while(current.getParentTree().getParentTree() != null){
+        current = current.getParentTree();
+        firstLeftSibling = this.getLeftSibling(current);
+        if(firstLeftSibling != null){
+          break;
+        }
+      }
+
+      // 부모노드중에 왼쪽 형제노드가 존재하는 경우 오른쪽으로 내려간다.
+      if(firstLeftSibling != null){
+        while (firstLeftSibling.getRightSubTree() != null){
+          firstLeftSibling = firstLeftSibling.getRightSubTree();
+        }
+        prevLastInsertedNode = firstLeftSibling;
+      }else{
+        // 부모노드중에 왼쪽 형제노드가 존재하지 않는 경우
+        current = this.root;
+        while(current.getRightSubTree() != null){
+          current = current.getRightSubTree();
+        }
+        prevLastInsertedNode = current;
+      }
+
+      // 마지막에 삽입된 노드가 부모노드의 오른쪽 자식노드인 경우
+    }else{
+      prevLastInsertedNode = this.lastInsertedNode.getParentTree().getLeftSubTree();
+    }
+
+    return prevLastInsertedNode;
+  }
+
   public BinaryTree getRoot() {
     return root;
   }
